@@ -6,7 +6,7 @@ class IssuesExportController < ApplicationController
   before_filter :authorize, :only => [:export_with_journals]
   def export_with_journals
     @issues = Issue.find(:all, :conditions => ['id in (?)', params[:ids]])
-    csv = issues_to_csv_with_journals(@issues, @project)
+    csv = issues_to_csv(@issues, @project)
     
     send_data(add_journals(csv), :filename => 'export.csv', :type => 'text/csv')
   end
