@@ -2,6 +2,25 @@ class IssuesExportController < ApplicationController
   unloadable
   include IssuesHelper
   include IssuesExportHelper
+  helper :journals
+  helper :projects
+  include ProjectsHelper   
+  helper :custom_fields
+  include CustomFieldsHelper
+  helper :issue_relations
+  include IssueRelationsHelper
+  helper :watchers
+  include WatchersHelper
+  helper :attachments
+  include AttachmentsHelper
+  helper :queries
+  include QueriesHelper
+  helper :sort
+  include SortHelper
+  include IssuesHelper
+  helper :timelog
+  include Redmine::Export::PDF
+
   before_filter :find_project, :only => [:export_with_journals]
   before_filter :authorize, :only => [:export_with_journals]
   def export_with_journals
