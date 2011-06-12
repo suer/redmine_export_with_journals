@@ -21,16 +21,25 @@ class IssuesExportController < ApplicationController
   helper :timelog
   include Redmine::Export::PDF
 
-  before_filter :find_project, :only => [:export_with_journals]
-  before_filter :authorize, :only => [:export_with_journals]
+  before_filter :find_optional_project, :only => [:export_with_journals]
   def export_with_journals
-    @issues = Issue.find(:all, :conditions => ['id in (?)', params[:ids]])
-    csv = issues_to_csv(@issues, @project)
-    
-    send_data(add_journals(csv), :filename => 'export.csv', :type => 'text/csv')
-  end
-  private
-  def find_project
-    @project = Project.find(params[:project_id])
+    retrieve_query
+    sort_init(@query.sort_criteria.empty? ? [['id', 'desc']] : @query.sort_criteria)
+    sort_update(@query.sortable_columns)
+    if @query.valid?
+      @issue_count = @query.issue_count
+      @limit = Setting.issues_export_limit.to_i
+      logger.info "issue_count #{@issue_count}"
+      logger.info "limit       #{@limit}"
+      logger.info "page        #{params['page']}"
+      @issue_pages = Paginator.new self, @issue_count, @limit, params['page']
+      @offset ||= @issue_pages.current.offset
+      @issues = @query.issues(:include => [:assigned_to, :tracker, :priority, :category, :fixed_version],
+                              :order => sort_clause, 
+                              :offset => @offset, 
+                              :limit => @limit)
+      csv = issues_to_csv(@issues, @project)
+      send_data(add_journals(csv), :filename => 'export.csv', :type => 'text/csv')
+    end
   end
 end
