@@ -38,7 +38,7 @@ class IssuesExportController < ApplicationController
                               :order => sort_clause, 
                               :offset => @offset, 
                               :limit => @limit)
-      csv = issues_to_csv(@issues, @project)
+      csv = issues_to_csv(@issues, @project, @query)
       send_data(add_journals(csv), :filename => 'export.csv', :type => 'text/csv')
     end
   end
