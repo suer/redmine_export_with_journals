@@ -1,7 +1,7 @@
 module IssuesExportHelper
   def add_journals(csv)
-    FasterCSV.generate do |newcsv|
-      FasterCSV.parse(csv.toutf8, :headers => true, :return_headers => true) do |row|
+    FCSV.generate do |newcsv|
+      FCSV.parse(csv.toutf8, :headers => true, :return_headers => true) do |row|
         if row.header_row?
           newcsv << row.fields + [t(:label_history)]
         else
