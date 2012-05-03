@@ -3,9 +3,9 @@ class ExportWithJournalsListener < Redmine::Hook::ViewListener
     project = Project.find_by_identifier(context[:project])
     return '' unless User.current.allowed_to?(:export_csv_with_journals, context[:project], :global => true)
     html = "<div class='contextual'>"
-    html << "<a href='#{url_for(:controller => 'issues_export', :action => 'export_with_journals', :project_id => context[:project])}'>"
-    html << l(:label_export_with_journals)
-    html << '</a>'
+    puts "========="
+    puts context[:project]
+    html << link_to(l(:label_export_with_journals), {:controller => 'issues_export', :action => 'export_with_journals', :project_id => context[:project]})
     html << '</div>'
   end
 end
