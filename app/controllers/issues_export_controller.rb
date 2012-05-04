@@ -29,16 +29,13 @@ class IssuesExportController < ApplicationController
     if @query.valid?
       @issue_count = @query.issue_count
       @limit = Setting.issues_export_limit.to_i
-      logger.info "issue_count #{@issue_count}"
-      logger.info "limit       #{@limit}"
-      logger.info "page        #{params['page']}"
       @issue_pages = Paginator.new self, @issue_count, @limit, params['page']
       @offset ||= @issue_pages.current.offset
       @issues = @query.issues(:include => [:assigned_to, :tracker, :priority, :category, :fixed_version],
                               :order => sort_clause, 
                               :offset => @offset, 
                               :limit => @limit)
-      csv = issues_to_csv(@issues, @project, @query)
+      csv = issues_to_csv(@issues, @project, @query, params)
       send_data(add_journals(csv), :filename => 'export.csv', :type => 'text/csv')
     end
   end
