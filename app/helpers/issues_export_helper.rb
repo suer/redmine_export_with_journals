@@ -1,7 +1,7 @@
 module IssuesExportHelper
   def add_journals(csv)
     csv_with_journals = FCSV.generate do |newcsv|
-      FCSV.parse(Iconv.conv('UTF-8', 'Shift_JIS', csv), :headers => true, :return_headers => true) do |row|
+      FCSV.parse(csv.encode('UTF-8', 'Shift_JIS'), :headers => true, :return_headers => true) do |row|
         if row.header_row?
           newcsv << row.fields + [t(:label_history)]
         else
@@ -11,6 +11,6 @@ module IssuesExportHelper
         end
       end
     end
-    Iconv.conv('Shift_JIS', 'UTF-8', csv_with_journals)
+    csv_with_journals.encode('Shift_JIS', 'UTF-8', :undef => :replace)
   end
 end
