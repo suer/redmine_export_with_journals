@@ -35,7 +35,11 @@ class IssuesExportController < ApplicationController
                               :order => sort_clause, 
                               :offset => @offset, 
                               :limit => @limit)
-      csv = issues_to_csv(@issues, @project, @query, params)
+      if respond_to?(:query_to_csv) # Redmine 2.3 later
+        csv = query_to_csv(@issues, @query, params)
+      else
+        csv = issues_to_csv(@issues, @project, @query, params)
+      end
       send_data(add_journals(csv), :filename => 'export.csv', :type => 'text/csv')
     end
   end
