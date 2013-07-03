@@ -1,4 +1,24 @@
 <div class='contextual'>
-  <%= link_to(l(:label_export_with_journals), {:controller => 'issues_export', :action => 'export_with_journals', :project_id => project, :columns => 'all'}) %>
+  <%= link_to(l(:label_export_with_journals),
+    {:controller => 'issues_export', :action => 'export_with_journals', :project_id => project, :columns => 'all'},
+    :onclick => "showModal('csv-export-with-journals-options', '330px'); return false;")
+   %>
+</div>
+
+<div id="csv-export-with-journals-options" style="display:none;">
+  <h3 class="title"><%= l(:label_export_with_journals) %></h3>
+  <%= form_tag({:controller => 'issues_export', :action => 'export_with_journals', :project_id => project}, :method => :get, :id => 'csv-export-form') do %>
+  <p>
+    <label><%= radio_button_tag 'columns', '', true %> <%= l(:description_selected_columns) %></label><br />
+    <label><%= radio_button_tag 'columns', 'all' %> <%= l(:description_all_columns) %></label>
+  </p>
+  <p>
+    <label><%= check_box_tag 'description', '1', @query.has_column?(:description) %> <%= l(:field_description) %></label>
+  </p>
+  <p class="buttons">
+    <%= submit_tag l(:button_export), :name => nil, :onclick => "hideModal(this);" %>
+    <%= submit_tag l(:button_cancel), :name => nil, :onclick => "hideModal(this);", :type => 'button' %>
+  </p>
+  <% end %>
 </div>
 
