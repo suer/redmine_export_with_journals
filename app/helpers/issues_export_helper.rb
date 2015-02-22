@@ -1,7 +1,7 @@
 module IssuesExportHelper
   def add_journals(csv)
-    csv_with_journals = FCSV.generate do |newcsv|
-      FCSV.parse(Redmine::CodesetUtil.to_utf8(csv, 'CP932'), :headers => true, :return_headers => true) do |row|
+    csv_with_journals = CSV.generate do |newcsv|
+      CSV.parse(Redmine::CodesetUtil.to_utf8(csv, 'CP932'), :headers => true, :return_headers => true) do |row|
         if row.header_row?
           newcsv << row.fields + [t(:label_history)]
         else
