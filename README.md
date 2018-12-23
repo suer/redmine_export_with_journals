@@ -6,7 +6,7 @@ A redmine plugin to export issues CSV with history.
 
 Requirements
 ---------------------
-* Redmine 2.3.x
+* Redmine 4.0.0 or later
 
 Installation
 ---------------------
