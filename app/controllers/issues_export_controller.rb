@@ -21,7 +21,7 @@ class IssuesExportController < ApplicationController
   helper :timelog
   include Redmine::Export::PDF
 
-  before_filter :find_optional_project, :only => [:export_with_journals]
+  before_action :find_optional_project, :only => [:export_with_journals]
   def export_with_journals
     retrieve_query
     sort_init(@query.sort_criteria.empty? ? [['id', 'desc']] : @query.sort_criteria)
