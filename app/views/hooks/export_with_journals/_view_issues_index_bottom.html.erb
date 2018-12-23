@@ -9,12 +9,14 @@
   <h3 class="title"><%= l(:label_export_with_journals) %></h3>
   <%= form_tag({:controller => 'issues_export', :action => 'export_with_journals'}, :method => :get, :id => 'csv-export-form') do %>
     <%= hidden_field_tag 'project_id', (project.nil? ? '' : project.id) %>
+    <%= query_as_hidden_field_tags(@query) %>
   <p>
     <label><%= radio_button_tag 'columns', '', true %> <%= l(:description_selected_columns) %></label><br />
     <label><%= radio_button_tag 'columns', 'all' %> <%= l(:description_all_columns) %></label>
   </p>
   <p>
-    <label><%= check_box_tag 'description', '1', @query.has_column?(:description) %> <%= l(:field_description) %></label>
+    <label><%= check_box_tag 'c[]', 'description', @query.has_column?(:description) %> <%= l(:field_description) %></label>
+    <label><%= check_box_tag 'c[]', 'last_notes', @query.has_column?(:last_notes) %> <%= l(:label_last_notes) %></label>
   </p>
   <p class="buttons">
     <%= submit_tag l(:button_export), :name => nil, :onclick => "hideModal(this);" %>
