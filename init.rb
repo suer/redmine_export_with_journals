@@ -1,5 +1,5 @@
 require 'redmine'
-require 'export_with_journals'
+require File.expand_path('../lib/export_with_journals_listener', __FILE__)
 
 Redmine::Plugin.register :redmine_export_with_journals do
   name 'Redmine Export With Journals plugin'
