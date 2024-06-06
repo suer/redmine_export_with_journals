@@ -1,5 +1,4 @@
 class IssuesExportController < ApplicationController
-  unloadable
   include IssuesHelper
   include IssuesExportHelper
   helper :journals
