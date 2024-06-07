@@ -28,8 +28,8 @@ class IssuesExportController < ApplicationController
     if @query.valid?
       @issue_count = @query.issue_count
       @limit = Setting.issues_export_limit.to_i
-      @issue_pages = Paginator.new self, @issue_count, @limit, params['page']
-      @offset ||= @issue_pages.current.offset
+      @issue_pages = Paginator.new @issue_count, @limit, params['page']
+      @offset ||= @issue_pages.offset
       @issues = @query.issues(:include => [:assigned_to, :tracker, :priority, :category, :fixed_version],
                               :order => sort_clause, 
                               :offset => @offset, 
